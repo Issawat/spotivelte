@@ -5,16 +5,23 @@
 <script lang="ts">
 	import { WebPlayback } from 'svelte-spotify-web-playback';
 	import Player from '../lib/player.svelte';
-	import type { PlayerControl, PlayerPlugin, PlayerState } from '../types/spotifyWebPlayback';
-	let playerPlugin: PlayerPlugin, playerControl: PlayerControl, playerState: PlayerState;
+	import type { PlayerPlugin } from '../types/spotifyWebPlayback';
+	let playerPlugin: PlayerPlugin;
 
 	const client_id = 'f9b13ae6ed1c46779c523e9ca17aefe4';
-	const volume = 0.5;
-
-	const handleLogin = () => playerPlugin.login();
 </script>
 
-<WebPlayback {client_id} {volume} bind:this={playerPlugin}>
-	<button on:click={handleLogin}>Login</button>
-	<Player slot="all" {playerControl} {playerState} />
+<WebPlayback {client_id} bind:this={playerPlugin}>
+	<Player
+		slot="all"
+		let:player
+		let:state
+		let:error
+		let:internal
+		{playerPlugin}
+		playerState={state}
+		playerControl={player}
+		playerError={error}
+		playerInternal={internal}
+	/>
 </WebPlayback>
